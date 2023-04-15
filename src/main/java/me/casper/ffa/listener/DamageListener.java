@@ -21,7 +21,8 @@ public class DamageListener implements Listener {
                 ffaConfig.getConfiguration().getDouble("spawn.y"), ffaConfig.getConfiguration().getDouble("spawn.z"),
                 (float) ffaConfig.getConfiguration().getDouble("spawn.yaw"),
                 (float) ffaConfig.getConfiguration().getDouble("spawn.pitch"));
-        if (location.distance(event.getEntity().getLocation()) < 5) {
+        if (location.distance(event.getEntity().getLocation()) < 5 || event.getCause().equals(
+                EntityDamageEvent.DamageCause.FALL)) {
             event.setCancelled(true);
         }
     }

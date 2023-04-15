@@ -3,10 +3,14 @@ package me.casper.ffa.scoreboard;
 import me.casper.ffa.Main;
 import me.casper.ffa.mysql.CurrencyManager;
 import me.casper.ffa.utils.Rank;
+import net.minecraft.server.v1_8_R3.IChatBaseComponent;
+import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerListHeaderFooter;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.Arrays;
 
@@ -98,4 +102,22 @@ public class LobbyScoreboard {
             scoreboard.getTeam(getRank(all).getTeam()).addPlayer(all);
         });
     }
+
+    public void sendTablist(Player player, String title, String subTitle) {
+        IChatBaseComponent tabTitle = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + title + "\"}");
+        IChatBaseComponent tabSubTitle = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + subTitle + "\"}");
+
+        PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter(tabTitle);
+
+        try {
+            Field field = packet.getClass().getDeclaredField("b");
+            field.setAccessible(true);
+            field.set(packet, tabSubTitle);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+        }
+    }
+
 }

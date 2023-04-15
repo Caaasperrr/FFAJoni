@@ -36,6 +36,7 @@ public class JoinListener implements Listener {
         new LobbyScoreboard(player).setScoreboard();
         new LobbyScoreboard(player).startUpdating();
         new LobbyScoreboard(player).startUpdatingPrefix();
+        new LobbyScoreboard(player).sendTablist(player, "§cFFA", "§6by Caaasper");
 
         Bukkit.getOnlinePlayers().forEach(all -> new LobbyScoreboard(all).setPrefix());
 

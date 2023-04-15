@@ -9,9 +9,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.sql.SQLException;
-
-public class EntityDamageEvent implements Listener {
+public class EntityDamageListener implements Listener {
     private final CurrencyManager manager = Main.getInstance().getCurrencyManager();
 
     @EventHandler

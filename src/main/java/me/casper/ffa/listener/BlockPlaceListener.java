@@ -6,11 +6,11 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-public class BlockPlaceEvent implements Listener {
+public class BlockPlaceListener implements Listener {
 
     private final FFAConfig ffaConfig;
 
-    public BlockPlaceEvent(FFAConfig ffaConfig) {
+    public BlockPlaceListener(FFAConfig ffaConfig) {
         this.ffaConfig = ffaConfig;
     }
 

@@ -68,11 +68,12 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new JoinListener(currencyManager, ffaConfig), this);
         Bukkit.getPluginManager().registerEvents(new DamageListener(ffaConfig), this);
         Bukkit.getPluginManager().registerEvents(new FoodListener(), this);
-        Bukkit.getPluginManager().registerEvents(new DeadEvent(ffaConfig), this);
+        Bukkit.getPluginManager().registerEvents(new DeadListener(ffaConfig), this);
         Bukkit.getPluginManager().registerEvents(new QuitListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityDamageEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockBreakEvent(ffaConfig), this);
-        Bukkit.getPluginManager().registerEvents(new BlockPlaceEvent(ffaConfig), this);
+        Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BlockBreakListener(ffaConfig), this);
+        Bukkit.getPluginManager().registerEvents(new BlockPlaceListener(ffaConfig), this);
+        Bukkit.getPluginManager().registerEvents(new EntitySpawnListener(), this);
 
     }
 }
