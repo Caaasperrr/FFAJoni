@@ -1,0 +1,15 @@
+name: FFAJoni
+version: '${version}'
+main: me.casper.ffa.Main
+api-version: 1.8
+commands:
+  setspawn:
+    permission: ffa.setspawn
+  xp:
+    aliases:
+      - experience
+      - exp
+      - erfahrung
+  level:
+    aliases:
+      - lvl
