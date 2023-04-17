@@ -1,6 +1,7 @@
 package me.casper.ffa.commands;
 
 import lombok.RequiredArgsConstructor;
+import me.casper.ffa.Main;
 import me.casper.ffa.mysql.CurrencyManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,7 +15,7 @@ public class LevelCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player player = (Player) cs;
-        player.sendMessage("§aDu bist Level: " + currencyManager.getCurrency(player.getUniqueId().toString()).getNow(0) / 10);
+        player.sendMessage(Main.prefix + "§aDu bist Level: " + currencyManager.getCurrency(player.getUniqueId().toString()).join() / 10);
         return false;
     }
 }

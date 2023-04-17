@@ -3,13 +3,17 @@ package me.casper.ffa;
 import lombok.Getter;
 import me.casper.ffa.commands.LevelCommand;
 import me.casper.ffa.commands.SpawnCommand;
+import me.casper.ffa.commands.StatsCommand;
 import me.casper.ffa.commands.XpCommand;
 import me.casper.ffa.listener.*;
 import me.casper.ffa.mysql.CurrencyManager;
+import me.casper.ffa.mysql.DeathsManager;
+import me.casper.ffa.mysql.KillsManager;
 import me.casper.ffa.mysql.MySQL;
 import me.casper.ffa.utils.MySQLConfig;
 import me.casper.ffa.utils.FFAConfig;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
@@ -21,6 +25,10 @@ public class Main extends JavaPlugin {
     private MySQL mySQL;
 
     private CurrencyManager currencyManager;
+    private KillsManager killsManager;
+    private DeathsManager deathsManager;
+
+    public static String prefix = "§7[§cFFA§7] ";
 
     MySQLConfig mySQLFile;
     FFAConfig ffaConfig = null;
@@ -36,6 +44,8 @@ public class Main extends JavaPlugin {
         mySQL.createTables();
 
         currencyManager = new CurrencyManager(mySQL);
+        killsManager = new KillsManager(mySQL);
+        deathsManager = new DeathsManager(mySQL);
 
         register();
 
@@ -60,12 +70,13 @@ public class Main extends JavaPlugin {
         getCommand("setspawn").setExecutor(new SpawnCommand(ffaConfig));
         getCommand("xp").setExecutor(new XpCommand(currencyManager));
         getCommand("level").setExecutor(new LevelCommand(currencyManager));
+        getCommand("stats").setExecutor(new StatsCommand(killsManager, deathsManager, currencyManager));
 
 
         /*
         register Events
          */
-        Bukkit.getPluginManager().registerEvents(new JoinListener(currencyManager, ffaConfig), this);
+        Bukkit.getPluginManager().registerEvents(new JoinListener(currencyManager, killsManager, deathsManager, ffaConfig), this);
         Bukkit.getPluginManager().registerEvents(new DamageListener(ffaConfig), this);
         Bukkit.getPluginManager().registerEvents(new FoodListener(), this);
         Bukkit.getPluginManager().registerEvents(new DeadListener(ffaConfig), this);

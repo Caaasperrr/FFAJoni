@@ -33,6 +33,11 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder setUnbreakable(boolean unbreakable) {
+        itemMeta.spigot().setUnbreakable(unbreakable);
+        return this;
+    }
+
     @Override
     public String toString() {
         return "ItemBuilder{" +

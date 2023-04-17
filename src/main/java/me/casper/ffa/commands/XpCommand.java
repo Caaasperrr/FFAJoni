@@ -1,6 +1,7 @@
 package me.casper.ffa.commands;
 
 import lombok.RequiredArgsConstructor;
+import me.casper.ffa.Main;
 import me.casper.ffa.mysql.CurrencyManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -18,14 +19,14 @@ public class XpCommand implements CommandExecutor {
         Player player = (Player)cs;
 
         if(args.length == 0){
-            player.sendMessage("§7Dein Exp beträgt: §6§l" + currencyManager.getCurrency(player.getUniqueId().toString()).join());
+            player.sendMessage(Main.prefix +  "§7Dein Exp beträgt: §6§l" + currencyManager.getCurrency(player.getUniqueId().toString()).join());
         }else if(args.length == 3){
             // money add 1bluenitrox 1
             if(args[0].equalsIgnoreCase("add")){
                 Player addplayer = Bukkit.getPlayer(args[1]);
                 if(addplayer != null) {
                     currencyManager.addCurrency(addplayer.getUniqueId().toString(), Integer.parseInt(args[2]));
-                    player.sendMessage("EXP wurde hinzugefügt");
+                    player.sendMessage(Main.prefix + "EXP wurde hinzugefügt");
                 }else {
                     player.sendMessage("player not online");
                 }
@@ -34,7 +35,7 @@ public class XpCommand implements CommandExecutor {
                 Player addplayer = Bukkit.getPlayer(args[1]);
                 if(addplayer != null) {
                     currencyManager.setCurrency(addplayer.getUniqueId().toString(), Integer.parseInt(args[2]));
-                    player.sendMessage("EXP wurde gesetzt");
+                    player.sendMessage(Main.prefix + "EXP wurde gesetzt");
                 }else {
                     player.sendMessage("player not online");
                 }

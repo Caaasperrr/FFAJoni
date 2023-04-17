@@ -123,7 +123,9 @@ public class MySQL {
                 (
                     `uniqueId` VARCHAR(36) NOT NULL PRIMARY KEY,
                     `money`    INT(10)     NOT NULL,
-                    `exp`      INT(10)     NOT NULL
+                    `exp`      INT(10)     NOT NULL,
+                    `kills`      INT(10)     NOT NULL,
+                    `deaths`      INT(10)     NOT NULL
                 ) DEFAULT CHARSET = utf8mb4""").join();
     }
 

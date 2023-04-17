@@ -2,6 +2,8 @@ package me.casper.ffa.scoreboard;
 
 import me.casper.ffa.Main;
 import me.casper.ffa.mysql.CurrencyManager;
+import me.casper.ffa.mysql.DeathsManager;
+import me.casper.ffa.mysql.KillsManager;
 import me.casper.ffa.utils.Rank;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerListHeaderFooter;
@@ -14,10 +16,12 @@ import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+
 public class LobbyScoreboard {
     private final Player player;
     private final CurrencyManager manager = Main.getInstance().getCurrencyManager();
-
+    private final DeathsManager deathsManager = Main.getInstance().getDeathsManager();
+    private final KillsManager killsManager = Main.getInstance().getKillsManager();
 
     public LobbyScoreboard(final Player player) {
         this.player = player;
@@ -25,7 +29,7 @@ public class LobbyScoreboard {
 
     public static Rank getRank(final Player user) {
         for (Rank rank : Rank.values()) {
-            if (user.hasPermission("rank" + rank.name()))
+            if (user.hasPermission("rank." + rank.getGroupName().toLowerCase()))
                 return rank;
         }
 
@@ -50,7 +54,7 @@ public class LobbyScoreboard {
 
         board.setScore(" ", 6);
         board.setScore("§7Rank §8• " + getRank(player).getName(), 5);
-        board.setScore("§7Level §8• §2" + manager.getCurrency(player.getUniqueId().toString()).getNow(0) / 10, 4);
+        board.setScore("§7Level §8• §6" + manager.getCurrency(player.getUniqueId().toString()).getNow(0) / 10, 4);
         //        try {
 //            board.setScore("Level: §2" + manager.getLevel(player.getUniqueId()), 4);
 //            board.setScore("Coins: §2" + manager.getCoins(player.getUniqueId()), 3);
@@ -61,15 +65,15 @@ public class LobbyScoreboard {
         int counter = 0;
 
         board.setScore("  ", 2);
-        board.setScore("§7Players §8• §2" + Bukkit.getOnlinePlayers().size(), 1);
-        board.setScore("§7Server §8• §2" + Bukkit.getServerName(), 0);
+        board.setScore("§7Players §8• §6" + Bukkit.getOnlinePlayers().size(), 1);
+        board.setScore("§7Server §8• §6" + Bukkit.getServerName(), 0);
         setPrefix();
     }
 
     public void update() {
         BPlayerBoard board = ScoreboardAPI.instance().getBoard(player);
         board.setScore("§7Rank §8• " + getRank(player).getName(), 5);
-        board.setScore("§7Level §8• §2" + manager.getCurrency(player.getUniqueId().toString()).join() / 10, 4);
+        board.setScore("§7Level §8• §6" + manager.getCurrency(player.getUniqueId().toString()).join() / 10, 4);
         //        try {
 //            board.setScore("Level: §2" + manager.getLevel(player.getUniqueId()), 4);
 //            board.setScore("Coins: §2" + manager.getCoins(player.getUniqueId()), 3);
@@ -77,11 +81,12 @@ public class LobbyScoreboard {
 //            e.printStackTrace();
 //        }
         int counter = 0;
-        board.setScore("§7Players §8• §2" + Bukkit.getOnlinePlayers().size(), 1);
+        board.setScore("§7Players §8• §6" + Bukkit.getOnlinePlayers().size(), 1);
     }
 
     public void startUpdating() {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), this::update, 0L, 5 * 20L);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {sendTablist("§cFFA \n", "\n" + "§7Level: \n§6" + manager.getCurrency(player.getUniqueId().toString()).join() / 10 + "\n" + "§7Kills: §6" + killsManager.getKills(player.getUniqueId().toString()).join() + "        §7Deaths: §6" + deathsManager.getDeaths(player.getUniqueId().toString()).join());}, 0L, 5 * 20L);
     }
 
     public void startUpdatingPrefix() {
@@ -103,7 +108,7 @@ public class LobbyScoreboard {
         });
     }
 
-    public void sendTablist(Player player, String title, String subTitle) {
+    public void sendTablist(String title, String subTitle) {
         IChatBaseComponent tabTitle = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + title + "\"}");
         IChatBaseComponent tabSubTitle = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + subTitle + "\"}");
 

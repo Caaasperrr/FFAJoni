@@ -29,8 +29,8 @@ public class CurrencyManager {
             if (existing) {
                 return CompletableFuture.completedFuture(null);
             }
-            String query = "INSERT INTO `userdata` (uniqueId, money, exp) VALUES (?, ?, ?)";
-            return mysql.update(query, uniqueId, 0, 0).thenAccept(result -> {});
+            String query = "INSERT INTO `userdata` (uniqueId, money, exp, kills, deaths) VALUES (?, ?, ?, ?, ?)";
+            return mysql.update(query, uniqueId, 0, 0, 0, 0).thenAccept(result -> {});
         });
     }
 
