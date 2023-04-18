@@ -1,10 +1,7 @@
 package me.casper.ffa;
 
 import lombok.Getter;
-import me.casper.ffa.commands.LevelCommand;
-import me.casper.ffa.commands.SpawnCommand;
-import me.casper.ffa.commands.StatsCommand;
-import me.casper.ffa.commands.XpCommand;
+import me.casper.ffa.commands.*;
 import me.casper.ffa.listener.*;
 import me.casper.ffa.mysql.CurrencyManager;
 import me.casper.ffa.mysql.DeathsManager;
@@ -71,6 +68,7 @@ public class Main extends JavaPlugin {
         getCommand("xp").setExecutor(new XpCommand(currencyManager));
         getCommand("level").setExecutor(new LevelCommand(currencyManager));
         getCommand("stats").setExecutor(new StatsCommand(killsManager, deathsManager, currencyManager));
+        getCommand("gm").setExecutor(new GamemodeCommand());
 
 
         /*
@@ -85,6 +83,7 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new BlockBreakListener(ffaConfig), this);
         Bukkit.getPluginManager().registerEvents(new BlockPlaceListener(ffaConfig), this);
         Bukkit.getPluginManager().registerEvents(new EntitySpawnListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
 
     }
 }
